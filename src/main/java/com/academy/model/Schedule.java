@@ -1,0 +1,43 @@
+package com.academy.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * @author : Volha Salash
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Schedule {
+
+    private int id;
+
+    private String stationName;
+
+    private String trainName;
+
+    private String trainStatus;
+
+    private String arrivalTime;
+
+    private String departureTime;
+
+    private boolean direction;
+
+    private String endStation;
+
+    public String getColorForTimetable() {
+        switch (getTrainStatus()) {
+            case "On Schedule":
+                return "forestgreen";
+            case "Delayed":
+                return "goldenrod";
+            case "Cancelled":
+                return "red";
+            default:
+                return "black";
+        }
+    }
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>RLW Timetable</title>
+    <h:outputStylesheet library="css" name="timetableColors.css" target="head"/>
+</h:head>
+
+<h:body>
+    <h1 style="text-align: center">Live Timetable</h1>
+    <h:form>
+        <p:tabView value="#{timetable.schedules}" var="schedule" scrollable="true"
+                   activeIndex="#{timetable.activeIndex}">
+            <p:ajax event="tabChange" listener="#{timetable.onTabChange}"/>
+            <p:tab title="#{schedule.key}">
+                <p:dataTable var="scheduleItem" value="#{schedule.value}">
+                    <p:column headerText="Train" sortBy="#{scheduleItem.trainName}">
+                        <h:outputText value="#{scheduleItem.trainName}"/>
+                    </p:column>
+                    <p:column headerText="Arrival" sortBy="#{scheduleItem.arrivalTime}">
+                        <h:outputText value="#{scheduleItem.arrivalTime}"/>
+                    </p:column>
+                    <p:column headerText="Departure" sortBy="#{scheduleItem.departureTime}">
+                        <h:outputText value="#{scheduleItem.departureTime}"/>
+                    </p:column>
+                    <p:column headerText="Direction" sortBy="#{scheduleItem.endStation}">
+                        <h:outputText value="#{scheduleItem.endStation}"/>
+                    </p:column>
+                    <p:column headerText="Status" sortBy="#{scheduleItem.trainStatus}">
+                        <h:outputText value="#{scheduleItem.trainStatus}"
+                                      style="color: #{scheduleItem.getColorForTimetable()}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+        </p:tabView>
+    </h:form>
+</h:body>
+
+<o:socket channel="timetableChannel" scope="application" onmessage="socketListener"/>
+
+<script type="text/javascript">
+    function socketListener(message, channel, event) {
+        window.location.reload();
+    }
+</script>
+
+</html>
